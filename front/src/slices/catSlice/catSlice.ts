@@ -1,6 +1,7 @@
-import { TCats } from "../types/TCats";
+import { TCats } from "../../types/TCats";
 import { createSlice } from "@reduxjs/toolkit";
-import { getCatsAction } from "../actions/ApiActions";
+import { getCatsAction } from "../../actions/ApiActions";
+
 
 export type TPagination = {
   page: number;
@@ -34,19 +35,23 @@ export const catSlice = createSlice({
       const start = state.pagination.page * state.pagination.limit - state.pagination.limit;
       const end = state.pagination.page * state.pagination.limit;
       return state.cats.slice(start, end);
-    }
+    },
+    isPeak: (state) => state.pagination.isPeak,
   },
   extraReducers: (builder) => {
     builder.addCase(getCatsAction.pending, (state) => {
       state.isLoad = true;
     });
     builder.addCase(getCatsAction.fulfilled, (state, action) => {
-      state.cats = action.payload;
+      state.cats.push(...action.payload);
+      if(action.payload.length < state.pagination.limit) {
+        state.pagination.isPeak = true;
+      }
       state.isLoad = false;
     });
     builder.addCase(getCatsAction.rejected, (state, _) => {
       state.isLoad = false;
-      state.error = 'Ошибка загрузки котиков';
+      state.error = 'Ошибка загрузки котиков :`(';
     });
   },
 
@@ -57,4 +62,5 @@ export const catSlice = createSlice({
   },
 });
 
-
+export const { paginate } = catSlice.actions;
+export const { getLastCats, isPeak } = catSlice.selectors;

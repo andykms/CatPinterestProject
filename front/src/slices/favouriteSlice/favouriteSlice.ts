@@ -1,6 +1,6 @@
-import { TFavourite } from "../types/TFavourite";
+import { TFavourite } from "../../types/TFavourite";
 import { createSlice } from "@reduxjs/toolkit";
-import { getLikesAction, deleteLikeAction } from "../actions/ApiActions";
+import { getLikesAction, deleteLikeAction } from "../../actions/ApiActions";
 
 export interface FavouriteState {
   favourite: TFavourite;
@@ -54,5 +54,6 @@ export const favouriteSlice = createSlice({
       state.isLoading = false;
     })
   }
-
 });
+
+export const { getLikes } = favouriteSlice.selectors;
