@@ -1,0 +1,11 @@
+.liked {
+  fill: var(--liked-color);
+}
+
+.like {
+  transition: fill 0.3s ease;
+}
+
+.like:hover {
+  fill: var(--liked-color);
+}

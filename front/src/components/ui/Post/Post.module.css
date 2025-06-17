@@ -1,0 +1,30 @@
+.post {
+  width: 225px;
+  height: 225px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--post-background-color);
+  transform-origin: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.postImage {
+  width: 100%;
+  z-index: -1;
+}
+
+.postDescription {
+  display: none;
+}
+
+.post:hover {
+  transform: scale(1.14);
+}
+
+.postImage:hover .postDescription {
+  justify-self: flex-end;
+  z-index: 1;
+  padding: 4px;
+  display: flex;
+  justify-content: flex-end;
+}

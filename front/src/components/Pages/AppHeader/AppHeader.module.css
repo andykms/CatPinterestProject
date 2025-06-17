@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding-inline: var(--main-padding);
+  background-color: var(--header-background-color);
+  block-size: 64px;
+  inline-size: 100%;
+  position: fixed;
+  z-index: 10;
+}
+
+.buttonLink {
+  border: none;
+  background-color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--button-color);
+  text-decoration: none;
+  block-size: 100%;
+  padding-inline: 23px;
+  transition: background-color 0.1s ease;
+}
+
+.inactive:hover {
+  background-color: var(--hover-button-background-color);
+}
+
+.active {
+  color: var(--button-color);
+  background-color: var(--button-active-background-color);
+}
+
+.inactive {
+  color: var(--inavtive-button-color);
+}

@@ -1,0 +1,26 @@
+.button {
+  border: none;
+  background-color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--button-color);
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+.active {
+  color: var(--button-color);
+  background-color: var(--button-active-background-color);
+}
+
+.inactive {
+  color: var(--inavtive-button-color);
+}
+
+.buttonText {
+  font-size: 14px;;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.25px;
+}

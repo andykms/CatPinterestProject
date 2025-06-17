@@ -1,0 +1,10 @@
+:root {
+  --button-color: #FFF;
+  --inavtive-button-color: rgba(255, 255, 255, 0.7);
+  --button-active-background-color: #1E88E5;
+  --liked-color: #F24E1E;
+  --post-background-color: #FFF;
+  --main-padding: 62px;
+  --header-background-color: #2196F3;
+  --hover-button-background-color: #42A5F5;
+}
