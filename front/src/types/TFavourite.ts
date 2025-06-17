@@ -3,6 +3,10 @@ export interface IFavourite {
   created_at: string;
 }
 
-export type TFavourite = {
+export type TLikedCat = {
+  cat_id: string;
+}
+
+export type TFavourites = {
   data: IFavourite[];
 }

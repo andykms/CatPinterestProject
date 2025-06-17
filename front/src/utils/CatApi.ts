@@ -1,7 +1,7 @@
 import { apiUrl } from "./APIURL";
-import { TCats } from "../types/TCats";
+import { TCats, ICat } from "../types/TCats";
 import { TUser } from "../types/TUser";
-import { TFavourite } from "../types/TFavourite";
+import { TFavourites, TLikedCat, IFavourite } from "../types/TFavourite";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -19,6 +19,17 @@ export const getCatsApi = (): Promise<TServerResponse<TCats>> => {
     },
     redirect: "follow",
   }).then((response) => checkResponse<TServerResponse<TCats>>(response));
+};
+
+export const getCatByIdApi = (id: string): Promise<TServerResponse<ICat>> => {
+  return fetch(apiUrl.get_cat_by_id + id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiUrl.cats_api_key,
+    },
+    redirect: "follow",
+  }).then((response) => checkResponse<TServerResponse<ICat>>(response));
 };
 
 export const registerUserApi = async (
@@ -46,14 +57,14 @@ export const registerUserApi = async (
   return Promise.reject("Registration failed");
 };
 
-export const getLikesApi = async (): Promise<TServerResponse<TFavourite>> => {
+export const getLikesApi = async (): Promise<TServerResponse<TFavourites>> => {
   return fetch(apiUrl.favourite_cats, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("authToken"),
     },
   })
-    .then((response) => checkResponse<TServerResponse<TFavourite>>(response))
+    .then((response) => checkResponse<TServerResponse<TFavourites>>(response))
     .catch((error) => Promise.reject(error));
 };
 
@@ -74,3 +85,26 @@ export const deleteLikeApi = async (
     })
     .catch((error) => Promise.reject(error));
 };
+
+export const addLike = async (
+  id: string
+): Promise<TServerResponse<IFavourite>> => {
+  const token = localStorage.getItem('authToken');
+
+  try {
+   const response = await fetch(apiUrl.favourite_cats, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ cat_id: id })
+    });
+    if(response.status === 201) {
+      return await response.json();
+    }
+    throw new Error('Failed to add like')
+  } catch(error) {
+    throw error;
+  }
+}

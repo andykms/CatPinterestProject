@@ -1,5 +1,5 @@
-import { TUser } from "../types/TUser";
-import { registerUserAction } from "../actions/ApiActions";
+import { TUser } from "../../types/TUser";
+import { registerUserAction } from "../../actions/ApiActions";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface UserState {

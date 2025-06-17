@@ -1,21 +1,22 @@
-import { TFavourite } from "../../types/TFavourite";
+import { TFavourites } from "../../types/TFavourite";
+import { TCats } from "../../types/TCats";
 import { createSlice } from "@reduxjs/toolkit";
-import { getLikesAction, deleteLikeAction } from "../../actions/ApiActions";
+import { getLikesAction, deleteLikeAction, getFavoritesCatsAction, addLikeAction } from "../../actions/ApiActions";
 
 export interface FavouriteState {
-  favourite: TFavourite;
+  favourite: TFavourites;
+  favouriteCats: TCats;
   isLoading: boolean;
   error: string;
-  lastDeletedLikeId: string;
 }
 
 const initialState: FavouriteState = {
   favourite: {
     data: []
   },
+  favouriteCats: [],
   isLoading: false,
-  error: "",
-  lastDeletedLikeId: ""
+  error: ""
 };
 
 export const favouriteSlice = createSlice({
@@ -52,6 +53,32 @@ export const favouriteSlice = createSlice({
     builder.addCase(deleteLikeAction.rejected, (state, action) => {
       state.error = action.error.message ? action.error.message : "";
       state.isLoading = false;
+    })
+    builder.addCase(addLikeAction.fulfilled, (state, action) => {
+      state.favourite.data.push(action.payload);
+      state.isLoading = false;
+      state.error = "";
+    });
+    builder.addCase(addLikeAction.pending, (state) => {
+      state.isLoading = true;
+      state.error = "";
+    });
+    builder.addCase(addLikeAction.rejected, (state, action) => {
+      state.error = action.error.message ? action.error.message : "";
+      state.isLoading = false;
+    })
+    builder.addCase(getFavoritesCatsAction.fulfilled, (state, action)=>{
+      state.favouriteCats = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    })
+    builder.addCase(getFavoritesCatsAction.pending, (state, _)=>{
+      state.isLoading = true;
+      state.error = '';
+    })
+    builder.addCase(getFavoritesCatsAction.rejected, (state, action)=>{
+      state.isLoading = false;
+      state.error = action.error.message ? action.error.message : '';
     })
   }
 });

@@ -10,6 +10,7 @@
 
 export const apiUrl = {
   get_ten_random_cats:'https://api.thecatapi.com/v1/images/search?limit=10',
+  get_cat_by_id: 'https://api.thecatapi.com/v1/images/',
   cats_api_key: 'live_qg2PmbFs9FnHrzXcVKxJlYJ4TiLk6Vx6GFsj7EbcCtKTfBT7b78RDnQpMTHWUKQm',
 
   favourite_cats: 'http://localhost:3000/likes',
