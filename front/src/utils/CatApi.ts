@@ -1,7 +1,7 @@
 import { apiUrl } from "./APIURL";
 import { TCats, ICat } from "../types/TCats";
 import { TUser } from "../types/TUser";
-import { TFavourites, TLikedCat, IFavourite } from "../types/TFavourite";
+import { TFavourites, TLikedCat, IFavourite, TUnlikedCat } from "../types/TFavourite";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -70,7 +70,7 @@ export const getLikesApi = async (): Promise<TServerResponse<TFavourites>> => {
 
 export const deleteLikeApi = async (
   id: string
-): Promise<TServerResponse<{ id: string }>> => {
+): Promise<TServerResponse<TUnlikedCat>> => {
   return fetch(apiUrl.favourite_cats + "/" + id, {
     method: "DELETE",
     headers: {
@@ -78,15 +78,15 @@ export const deleteLikeApi = async (
     },
   })
     .then((response) =>
-      checkResponse<TServerResponse<{ id: string }>>(response)
+      checkResponse<TServerResponse<{}>>(response)
     )
     .then(() => {
-      return { success: true, id };
+      return { success: true, cat_id: id };
     })
     .catch((error) => Promise.reject(error));
 };
 
-export const addLike = async (
+export const addLikeApi = async (
   id: string
 ): Promise<TServerResponse<IFavourite>> => {
   const token = localStorage.getItem('authToken');

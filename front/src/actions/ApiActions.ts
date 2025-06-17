@@ -1,4 +1,4 @@
-import { getCatsApi, registerUserApi, getLikesApi, deleteLikeApi, getCatByIdApi, addLike } from "../utils/CatApi";
+import { getCatsApi, registerUserApi, getLikesApi, deleteLikeApi, getCatByIdApi, addLikeApi } from "../utils/CatApi";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { TFavourites } from "../types/TFavourite";
 
@@ -42,6 +42,6 @@ export const getFavoritesCatsAction = createAsyncThunk("cats/getFavoritesCats", 
 });
 
 export const addLikeAction = createAsyncThunk("likes/addLike", async (id: string) => {
-  const response = await addLike(id);
+  const response = await addLikeApi(id);
   return response;
 });

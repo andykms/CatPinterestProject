@@ -6,7 +6,7 @@ import { getLikesAction, deleteLikeAction, getFavoritesCatsAction, addLikeAction
 export interface FavouriteState {
   favourite: TFavourites;
   favouriteCats: TCats;
-  isLoading: boolean;
+  isLoad: boolean;
   error: string;
 }
 
@@ -15,7 +15,7 @@ const initialState: FavouriteState = {
     data: []
   },
   favouriteCats: [],
-  isLoading: false,
+  isLoad: false,
   error: ""
 };
 
@@ -29,58 +29,59 @@ export const favouriteSlice = createSlice({
   extraReducers: (builder) =>{
     builder.addCase(getLikesAction.fulfilled, (state, action) => {
       state.favourite = action.payload;
-      state.isLoading = false;
+      state.isLoad = false;
       state.error = "";
     });
     builder.addCase(getLikesAction.pending, (state) => {
-      state.isLoading = true;
+      state.isLoad = true;
       state.error = "";
     });
     builder.addCase(getLikesAction.rejected, (state, action) => {
       state.error = action.error.message ? action.error.message : "";
-      state.isLoading = false;
+      state.isLoad = false;
     })
     builder.addCase(deleteLikeAction.fulfilled, (state, action) => {
-      const newData = state.favourite.data.filter(like => like.cat_id !== action.payload.id);
+      const newData = state.favourite.data.filter(like => like.cat_id !== action.payload.cat_id);
       state.favourite.data = newData;
-      state.isLoading = false;
+      state.isLoad = false;
       state.error = "";
     });
     builder.addCase(deleteLikeAction.pending, (state) => {
-      state.isLoading = true;
+      state.isLoad = true;
       state.error = "";
     });
     builder.addCase(deleteLikeAction.rejected, (state, action) => {
       state.error = action.error.message ? action.error.message : "";
-      state.isLoading = false;
+      state.isLoad = false;
     })
     builder.addCase(addLikeAction.fulfilled, (state, action) => {
       state.favourite.data.push(action.payload);
-      state.isLoading = false;
+      state.isLoad = false;
       state.error = "";
     });
     builder.addCase(addLikeAction.pending, (state) => {
-      state.isLoading = true;
+      state.isLoad = true;
       state.error = "";
     });
     builder.addCase(addLikeAction.rejected, (state, action) => {
       state.error = action.error.message ? action.error.message : "";
-      state.isLoading = false;
+      state.isLoad = false;
     })
     builder.addCase(getFavoritesCatsAction.fulfilled, (state, action)=>{
       state.favouriteCats = action.payload;
-      state.isLoading = false;
+      state.isLoad = false;
       state.error = '';
     })
     builder.addCase(getFavoritesCatsAction.pending, (state, _)=>{
-      state.isLoading = true;
+      state.isLoad = true;
       state.error = '';
     })
     builder.addCase(getFavoritesCatsAction.rejected, (state, action)=>{
-      state.isLoading = false;
+      state.isLoad = false;
       state.error = action.error.message ? action.error.message : '';
     })
   }
 });
 
 export const { getLikes } = favouriteSlice.selectors;
+export const favouriteReducer = favouriteSlice.reducer;

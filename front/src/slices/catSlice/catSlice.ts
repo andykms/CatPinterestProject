@@ -64,3 +64,4 @@ export const catSlice = createSlice({
 
 export const { paginate } = catSlice.actions;
 export const { getLastCats, isPeak } = catSlice.selectors;
+export const catReducer = catSlice.reducer;
