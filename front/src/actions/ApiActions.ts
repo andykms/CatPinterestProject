@@ -34,7 +34,7 @@ export const getFavouriteCatByIdAction = createAsyncThunk("cats/getFavouriteCatB
 
 export const getFavoritesCatsAction = createAsyncThunk("cats/getFavoritesCats", async (favourites: TFavourites) => {
   const result = [];
-  for(const favourite of favourites.data) {
+  for(const favourite of favourites) {
     const cat = await getCatByIdApi(favourite.cat_id);
     result.push(cat);
   }

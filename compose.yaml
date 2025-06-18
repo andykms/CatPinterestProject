@@ -18,16 +18,21 @@ services:
 
   cat-pinterest-api:
     container_name: cat-pinterest-api
-    image: cat-pinterest-api
     build:
-      context: ./api/
-    networks:
-      - cat-pinterest-net
+      context: ./api
     environment:
       NODE_ENV: prod
+      DB_HOST: cat-pinterest-api-pg
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: 1
+      DB_NAME: support_lk_db
+      JWT_SECRET: 1234567 # Добавляем секрет для JWT
     depends_on:
       cat-pinterest-api-pg:
         condition: service_healthy
+    networks:
+      - cat-pinterest-net
 
   cat-pinterest-front:
     container_name: cat-pinterest-front
@@ -40,20 +45,26 @@ services:
       NODE_ENV: prod
 
   cat-pinterest-api-pg:
+    ports:
+      - "5432:5432"
     container_name: cat-pinterest-api-pg
     image: postgres:14
-    networks:
-      - cat-pinterest-net
     environment:
       POSTGRES_PASSWORD: 1
       POSTGRES_USER: postgres
       POSTGRES_DB: support_lk_db
-    #      PG_DATA: /var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 5s
       retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Добавляем volume для сохранения данных
+    networks:
+      - cat-pinterest-net
 
 networks:
   cat-pinterest-net:
+
+volumes:
+  pgdata: # Объявляем volume для PostgreSQL

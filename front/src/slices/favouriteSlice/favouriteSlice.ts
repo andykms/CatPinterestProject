@@ -11,9 +11,7 @@ export interface FavouriteState {
 }
 
 const initialState: FavouriteState = {
-  favourite: {
-    data: []
-  },
+  favourite: [],
   favouriteCats: [],
   isLoad: false,
   error: ""
@@ -24,7 +22,9 @@ export const favouriteSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    getLikes: (state) => state.favourite.data,
+    getLikes: (state) => {
+      return state.favourite;
+    }
   },
   extraReducers: (builder) =>{
     builder.addCase(getLikesAction.fulfilled, (state, action) => {
@@ -41,8 +41,8 @@ export const favouriteSlice = createSlice({
       state.isLoad = false;
     })
     builder.addCase(deleteLikeAction.fulfilled, (state, action) => {
-      const newData = state.favourite.data.filter(like => like.cat_id !== action.payload.cat_id);
-      state.favourite.data = newData;
+      const newData = state.favourite.filter(like => like.cat_id !== action.payload.cat_id);
+      state.favourite = newData;
       state.isLoad = false;
       state.error = "";
     });
@@ -55,7 +55,7 @@ export const favouriteSlice = createSlice({
       state.isLoad = false;
     })
     builder.addCase(addLikeAction.fulfilled, (state, action) => {
-      state.favourite.data.push(action.payload);
+      state.favourite.push(action.payload);
       state.isLoad = false;
       state.error = "";
     });

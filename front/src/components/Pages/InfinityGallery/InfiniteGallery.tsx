@@ -7,11 +7,25 @@ import { getCatsAction } from "../../../actions/ApiActions";
 import { paginate, getLastCats } from "../../../slices/catSlice/catSlice";
 import { Like } from "../../ui/Like/Like";
 import { useEffect } from "react";
+import { useMemo } from "react";
+import { getLikes } from "../../../slices/favouriteSlice/favouriteSlice";
+import { addLikeAction, deleteLikeAction } from "../../../actions/ApiActions";
+import { useState } from "react";
 
 export const InfiniteGallery = () => {
 
   const cats = useSelector(getCats);
   const isInLimit = useSelector(isPeak);
+
+  const likes = useSelector(getLikes);
+
+  const [hashLikes, setHashLikes] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const set: Set<string> = new Set();
+    likes?.forEach((like) => set.add(like.cat_id));
+    setHashLikes(set);
+  }, [likes]);
 
   const dispatch = useDispatch();
 
@@ -27,8 +41,8 @@ export const InfiniteGallery = () => {
     dispatch(getCatsAction());
   };
 
-  const onClickLike = (id: string) => {
-    console.log(id)
+  const onClickLike = (id: string, hasLike: boolean) => {
+    hasLike ? dispatch(deleteLikeAction(id)) : dispatch(addLikeAction(id));
   };
   return (
     <InfiniteScroll
@@ -40,7 +54,7 @@ export const InfiniteGallery = () => {
     >
       {cats.map((post) => (
         <Post key={post.id} imageUrl={post.url}>
-          <Like onClick={() => onClickLike(post.id)} isLiked={false} />
+          <Like onClick={() => onClickLike(post.id, hashLikes.has(post.id))} isLiked={hashLikes.has(post.id)} />
         </Post>
       ))}
     </InfiniteScroll>

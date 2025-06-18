@@ -8,50 +8,48 @@ import { addLikeAction } from "../../actions/ApiActions";
 import { deleteLikeAction } from "../../actions/ApiActions";
 import { deleteLikeApi } from "../../utils/CatApi";
 
-const mockLikes: TFavourites = {
-  data: [
-    {
-      cat_id: "1",
-      created_at: "2020-01-01T00:00:00.000Z",
-    },
-    {
-      cat_id: "2",
-      created_at: "2020-01-02T00:00:00.000Z",
-    },
-    {
-      cat_id: "3",
-      created_at: "2020-01-03T00:00:00.000Z",
-    },
-    {
-      cat_id: "4",
-      created_at: "2020-01-04T00:00:00.000Z",
-    },
-    {
-      cat_id: "5",
-      created_at: "2020-01-05T00:00:00.000Z",
-    },
-    {
-      cat_id: "6",
-      created_at: "2020-01-06T00:00:00.000Z",
-    },
-    {
-      cat_id: "7",
-      created_at: "2020-01-07T00:00:00.000Z",
-    },
-    {
-      cat_id: "8",
-      created_at: "2020-01-08T00:00:00.000Z",
-    },
-    {
-      cat_id: "9",
-      created_at: "2020-01-09T00:00:00.000Z",
-    },
-    {
-      cat_id: "10",
-      created_at: "2020-01-10T00:00:00.000Z",
-    },
-  ],
-};
+const mockLikes: TFavourites = [
+  {
+    cat_id: "1",
+    created_at: "2020-01-01T00:00:00.000Z",
+  },
+  {
+    cat_id: "2",
+    created_at: "2020-01-02T00:00:00.000Z",
+  },
+  {
+    cat_id: "3",
+    created_at: "2020-01-03T00:00:00.000Z",
+  },
+  {
+    cat_id: "4",
+    created_at: "2020-01-04T00:00:00.000Z",
+  },
+  {
+    cat_id: "5",
+    created_at: "2020-01-05T00:00:00.000Z",
+  },
+  {
+    cat_id: "6",
+    created_at: "2020-01-06T00:00:00.000Z",
+  },
+  {
+    cat_id: "7",
+    created_at: "2020-01-07T00:00:00.000Z",
+  },
+  {
+    cat_id: "8",
+    created_at: "2020-01-08T00:00:00.000Z",
+  },
+  {
+    cat_id: "9",
+    created_at: "2020-01-09T00:00:00.000Z",
+  },
+  {
+    cat_id: "10",
+    created_at: "2020-01-10T00:00:00.000Z",
+  },
+];
 
 const mockAddedLike: IFavourite = {
   cat_id: "obniotnbi334o34n",
@@ -145,16 +143,16 @@ describe("Тест стейта любимых котов", () => {
 
     expect(store.getState().favourite.isLoad).toBe(false);
 
-    const newExpectedLikes = [...mockLikes.data]
+    const newExpectedLikes = [...mockLikes];
     newExpectedLikes.push(mockAddedLike);
 
     //Проверяем, что в стейте добавился лайк, которые отправлял моковый API
-    expect(store.getState().favourite.favourite.data).toEqual(newExpectedLikes);
+    expect(store.getState().favourite.favourite).toEqual(newExpectedLikes);
     //Проверяем, что в стейте нет ошибок
     expect(store.getState().favourite.error).toBe("");
   });
 
-  it('Удаление лайка', async () => {
+  it("Удаление лайка", async () => {
     const store = configureStore({
       reducer: {
         favourite: favouriteReducer,
@@ -164,37 +162,40 @@ describe("Тест стейта любимых котов", () => {
           favourite: mockLikes,
           favouriteCats: [],
           isLoad: false,
-          error: '',
+          error: "",
         },
       },
     });
-    (deleteLikeApi as jest.Mock).mockImplementation(() => new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          cat_id: mockDeletedLikeId,
-        });
-      }, 1000);
-    }));
+    (deleteLikeApi as jest.Mock).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              success: true,
+              cat_id: mockDeletedLikeId,
+            });
+          }, 1000);
+        })
+    );
     const action = store.dispatch(deleteLikeAction(mockDeletedLikeId));
-    
+
     expect(store.getState().favourite.isLoad).toBe(true);
 
     jest.advanceTimersByTime(500);
 
-    expect(store.getState().favourite.isLoad).toBe(true)
+    expect(store.getState().favourite.isLoad).toBe(true);
 
     jest.advanceTimersByTime(500);
-    
+
     await action;
     expect(store.getState().favourite.isLoad).toBe(false);
 
-  
-    const newExpectedLikes = mockLikes.data.filter(like => like.cat_id !== mockDeletedLikeId);
+    const newExpectedLikes = mockLikes.filter(
+      (like) => like.cat_id !== mockDeletedLikeId
+    );
 
     //Проверяем, что в стейте удалился лайк, который мы отправляли в моковый API
-    expect(store.getState().favourite.favourite.data).toEqual(newExpectedLikes);
-    expect(store.getState().favourite.error).toBe('');
-
+    expect(store.getState().favourite.favourite).toEqual(newExpectedLikes);
+    expect(store.getState().favourite.error).toBe("");
   });
 });

@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/typeorm": "^11.0.0",
+    "bcrypt": "^6.0.0",
+    "passport": "^0.7.0",
+    "passport-http-bearer": "^1.0.1",
+    "pg": "^8.16.0",
+    "typeorm": "^0.3.24"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/passport-http-bearer": "^1.0.41"
+  }
+}

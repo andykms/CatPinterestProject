@@ -11,6 +11,4 @@ export type TUnlikedCat = {
   cat_id: string;
 }
 
-export type TFavourites = {
-  data: IFavourite[];
-}
+export type TFavourites = IFavourite[];

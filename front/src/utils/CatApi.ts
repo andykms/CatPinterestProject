@@ -46,15 +46,14 @@ export const registerUserApi = async (
       password: password,
     }),
   });
-
-  if (response.status === 201) {
-    const token = response.headers.get("X-Auth-Token");
-    token && localStorage.setItem("authToken", token); // Сохраняем токен
+  console.log(response.statusText)
+  if (response.ok) {
 
     const userData = await response.json();
+    localStorage.setItem("authToken", userData.token);
     return userData;
   }
-  return Promise.reject("Registration failed");
+  return Promise.reject(response.statusText);
 };
 
 export const getLikesApi = async (): Promise<TServerResponse<TFavourites>> => {
@@ -77,13 +76,12 @@ export const deleteLikeApi = async (
       Authorization: "Bearer " + localStorage.getItem("authToken"),
     },
   })
-    .then((response) =>
-      checkResponse<TServerResponse<{}>>(response)
-    )
-    .then(() => {
+    .then((response) => {
+      if(!response.ok) {
+        return Promise.reject(response.statusText);
+      }
       return { success: true, cat_id: id };
     })
-    .catch((error) => Promise.reject(error));
 };
 
 export const addLikeApi = async (
