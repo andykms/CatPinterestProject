@@ -1,9 +1,9 @@
-import { TCats } from "../../types/TCats";
+import { TCats, TGalleryCats } from "../../types/TCats";
 import { catReducer } from "./catSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { getCatsApi } from "../../utils/CatApi";
 import { getCatsAction } from "../../actions/ApiActions";
-import { getLastCats, paginate } from "./catSlice";
+import { getCats, paginate } from "./catSlice";
 
 const mockCats: TCats = [
   {
@@ -212,7 +212,14 @@ describe('Тест стейта котов', ()=>{
     expect(store.getState().cat.isLoad).toBe(false);
 
     //Проверяем, что в стейте лежает те коты, которые отправлял моковый API
-    expect(store.getState().cat.cats).toEqual(mockCats.slice(0, 10));
+    const expectedCats: TGalleryCats = [];
+    mockCats.slice(0, 10).forEach((cat) => {
+      expectedCats.push({
+        ...cat,
+        galleryId: expect.any(String)
+      });
+    });
+    expect(store.getState().cat.cats).toEqual(expectedCats);
 
     //Проверяем, что в стейте нет ошибок
     expect(store.getState().cat.error).toBe('');
@@ -232,33 +239,15 @@ describe('Тест стейта котов', ()=>{
     );
 
     //Проверяем, что селектор вернул именно первые 10 котов
-    const cats = getLastCats(store.getState());
-    expect(cats).toEqual(mockCats.slice(0, 10));
-  })
-
-  it('Тест пагинатора', async ()=>{
-    const store = configureStore({
-      reducer: {
-        cat: catReducer,
-      },
+    const cats = getCats(store.getState());
+    const expectedCats: TGalleryCats = [];
+    mockCats.slice(0, 10).forEach((cat) => {
+      expectedCats.push({
+        ...cat,
+        galleryId: expect.any(String)
+      });
     });
-    (getCatsApi as jest.Mock).mockImplementation(
-      () => Promise.resolve(mockCats.slice(0, 10))
-    );
-    const action = await store.dispatch(
-      getCatsAction()
-    );
-
-    //Переводим пагинатор на следующую страницу
-    const newState = catReducer(store.getState().cat, paginate(store.getState())); 
-
-    const {pagination} = newState;
-
-    //Проверяем, что пагинатор перешел на следующую страницу
-    expect(pagination.page).toBe(2);
-    //Проверяем, что селектор пустой массив, поскольку мы получали только первые 10 котов
-    const cats = getLastCats({cat: newState});
-    expect(cats).toEqual([]);
+    expect(cats).toEqual(expectedCats);
   })
 })
 

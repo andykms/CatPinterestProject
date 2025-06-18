@@ -7,4 +7,9 @@ export interface ICat {
   favourite: {};
 }
 
+export interface TGalleryCat extends ICat {
+  galleryId: string;
+}
+
 export type TCats = ICat[];
+export type TGalleryCats = TGalleryCat[];

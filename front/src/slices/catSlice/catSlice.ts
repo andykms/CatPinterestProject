@@ -1,6 +1,7 @@
-import { TCats } from "../../types/TCats";
+import { TGalleryCats } from "../../types/TCats";
 import { createSlice } from "@reduxjs/toolkit";
 import { getCatsAction } from "../../actions/ApiActions";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export type TPagination = {
@@ -10,7 +11,7 @@ export type TPagination = {
 };
 
 export interface ICatState {
-  cats: TCats;
+  cats: TGalleryCats;
   isLoad: boolean;
   error: string;
   pagination: TPagination;
@@ -36,6 +37,7 @@ export const catSlice = createSlice({
       const end = state.pagination.page * state.pagination.limit;
       return state.cats.slice(start, end);
     },
+    getCats: (state) => state.cats,
     isPeak: (state) => state.pagination.isPeak,
   },
   extraReducers: (builder) => {
@@ -43,7 +45,12 @@ export const catSlice = createSlice({
       state.isLoad = true;
     });
     builder.addCase(getCatsAction.fulfilled, (state, action) => {
-      state.cats.push(...action.payload);
+      const loadedCats: TGalleryCats = [];
+      action.payload.forEach((cat) => {
+        loadedCats.push({...cat, galleryId: uuidv4()});
+      });
+      const newCats = [...state.cats, ...loadedCats]
+      state.cats = newCats;
       if(action.payload.length < state.pagination.limit) {
         state.pagination.isPeak = true;
       }
@@ -56,12 +63,12 @@ export const catSlice = createSlice({
   },
 
   reducers: {
-    paginate: (state, _) => {
+    paginate: (state) => {
       state.pagination.page+=1;
     },
   },
 });
 
 export const { paginate } = catSlice.actions;
-export const { getLastCats, isPeak } = catSlice.selectors;
+export const { getLastCats, isPeak, getCats } = catSlice.selectors;
 export const catReducer = catSlice.reducer;

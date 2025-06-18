@@ -5,12 +5,17 @@
   flex-direction: column;
   background-color: var(--post-background-color);
   transform-origin: center;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.15s ease-in-out;
+  z-index: 2;
+  align-self: center;
+  justify-self: center;
+  position: relative;
 }
 
 .postImage {
+  max-height: 100%;
   width: 100%;
-  z-index: -1;
+  z-index: 0;
 }
 
 .postDescription {
@@ -19,11 +24,15 @@
 
 .post:hover {
   transform: scale(1.14);
+  box-shadow: 0 9px 18px 0 rgba(0, 0, 0, 0.18), 0 6px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.postImage:hover .postDescription {
-  justify-self: flex-end;
-  z-index: 1;
+.post:hover .postDescription {
+  width: 225px;
+  position: absolute;
+  inset-inline-end: 15px;
+  inset-block-end: 15px;
+  z-index: 3;
   padding: 4px;
   display: flex;
   justify-content: flex-end;

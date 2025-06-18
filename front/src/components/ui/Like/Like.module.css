@@ -1,11 +1,15 @@
-.liked {
+.liked .heartInner{
   fill: var(--liked-color);
 }
 
 .like {
-  transition: fill 0.3s ease;
+  cursor: pointer;
 }
 
-.like:hover {
+.heartInner {
+  transition: fill 0.3s ease;;
+}
+
+.like:hover .heartInner{
   fill: var(--liked-color);
 }
