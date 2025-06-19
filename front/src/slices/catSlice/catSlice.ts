@@ -2,13 +2,7 @@ import { TGalleryCats } from "../../types/TCats";
 import { createSlice } from "@reduxjs/toolkit";
 import { getCatsAction } from "../../actions/ApiActions";
 import { v4 as uuidv4 } from 'uuid';
-
-
-export type TPagination = {
-  page: number;
-  limit: number;
-  isPeak: boolean;
-};
+import { TPagination } from "../../types/TPagination";
 
 export interface ICatState {
   cats: TGalleryCats;

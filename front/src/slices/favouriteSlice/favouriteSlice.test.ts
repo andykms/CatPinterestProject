@@ -117,6 +117,11 @@ describe("Тест стейта любимых котов", () => {
           favouriteCats: [],
           isLoad: false,
           error: "",
+          pagination: {
+            page: 0,
+            limit: 10,
+            isPeak: false,
+          }
         },
       },
     });
@@ -163,6 +168,11 @@ describe("Тест стейта любимых котов", () => {
           favouriteCats: [],
           isLoad: false,
           error: "",
+          pagination: {
+            page: 0,
+            limit: 10,
+            isPeak: false,
+          }
         },
       },
     });

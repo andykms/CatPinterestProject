@@ -1,6 +1,5 @@
 import { getCatsApi, registerUserApi, getLikesApi, deleteLikeApi, getCatByIdApi, addLikeApi } from "../utils/CatApi";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { TFavourites } from "../types/TFavourite";
 
 export const getCatsAction = createAsyncThunk("cats/getCats", async () => {
   const response = await getCatsApi();
@@ -32,11 +31,11 @@ export const getFavouriteCatByIdAction = createAsyncThunk("cats/getFavouriteCatB
   return response;
 });
 
-export const getFavoritesCatsAction = createAsyncThunk("cats/getFavoritesCats", async (favourites: TFavourites) => {
+export const getFavoritesCatsAction = createAsyncThunk("cats/getFavoritesCats", async (indexes: string[]) => {
   const result = [];
-  for(const favourite of favourites) {
-    const cat = await getCatByIdApi(favourite.cat_id);
-    result.push(cat);
+  for(const id of indexes) {
+    const catInfo = await getCatByIdApi(id);
+    result.push(catInfo);
   }
   return result;
 });

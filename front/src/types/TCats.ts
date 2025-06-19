@@ -1,6 +1,6 @@
-export interface ICat {
-  id: string;
-  url: string;
+import { IPost } from "./TPost";
+
+export interface ICat extends IPost {
   width: number;
   height: number;
   breeds: unknown[];

@@ -1,0 +1,32 @@
+.galleryContainer {
+  padding-block-start: 116px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 48px;
+  padding-inline-start: 62px;
+  padding-inline-end: 62px;
+  z-index: 1;
+}
+
+.loader {
+  display: block;
+  color: var(--loader-color);
+  grid-column-start: 1;
+  grid-column-end: -1;
+  align-self: center;
+  justify-self: center;
+  font-size: 16px;
+  margin-block-end: 31px;
+}
+
+@media (max-width: 1200px) {
+  .galleryContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .galleryContainer {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
