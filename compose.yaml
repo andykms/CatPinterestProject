@@ -27,7 +27,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: 1
       DB_NAME: support_lk_db
-      JWT_SECRET: 1234567 # Добавляем секрет для JWT
+      JWT_SECRET: 1234567 
     depends_on:
       cat-pinterest-api-pg:
         condition: service_healthy
@@ -59,7 +59,7 @@ services:
       timeout: 5s
       retries: 10
     volumes:
-      - pgdata:/var/lib/postgresql/data # Добавляем volume для сохранения данных
+      - pgdata:/var/lib/postgresql/data 
     networks:
       - cat-pinterest-net
 
@@ -67,4 +67,4 @@ networks:
   cat-pinterest-net:
 
 volumes:
-  pgdata: # Объявляем volume для PostgreSQL
+  pgdata: 

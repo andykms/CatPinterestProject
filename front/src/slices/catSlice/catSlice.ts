@@ -4,6 +4,7 @@ import { getCatsAction } from "../../actions/ApiActions";
 import { v4 as uuidv4 } from 'uuid';
 import { TPagination } from "../../types/TPagination";
 
+
 export interface ICatState {
   cats: TGalleryCats;
   isLoad: boolean;

@@ -9,6 +9,8 @@ import { addLikeAction, deleteLikeAction } from "../../actions/ApiActions";
 import { useUniqly } from "../../hooks/useUniqly";
 import { IFavourite } from "../../types/TFavourite";
 import { PostsGallery } from "../../components/PostsGallery/PostsGallery";
+import { useEffect } from "react";
+
 
 export const InfiniteGallery = () => {
 
@@ -21,6 +23,10 @@ export const InfiniteGallery = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getCatsAction());
+  }, [dispatch]);
+
   const onNext = () => {
     dispatch(paginate());
     dispatch(getCatsAction());
@@ -29,6 +35,7 @@ export const InfiniteGallery = () => {
   const onClickLike = (id: string, hasLike: boolean) => {
     hasLike ? dispatch(deleteLikeAction(id)) : dispatch(addLikeAction(id));
   };
+  
   return (
     <InfiniteScroll
       dataLength={cats.length}

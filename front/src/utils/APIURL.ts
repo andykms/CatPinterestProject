@@ -13,6 +13,7 @@ export const apiUrl = {
   get_cat_by_id: 'https://api.thecatapi.com/v1/images/',
   cats_api_key: 'live_qg2PmbFs9FnHrzXcVKxJlYJ4TiLk6Vx6GFsj7EbcCtKTfBT7b78RDnQpMTHWUKQm',
 
-  favourite_cats: 'http://localhost:3000/likes',
-  user: 'http://localhost:3000/user',
+  
+  favourite_cats: process.env.NODE_ENV === 'development' ? 'localhost:3000/likes' : 'api/likes',
+  user: process.env.NODE_ENV === 'development' ? 'localhost:3000/user' : 'api/user',
 }

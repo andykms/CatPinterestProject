@@ -1,7 +1,7 @@
 import { apiUrl } from "./APIURL";
 import { TCats, ICat } from "../types/TCats";
 import { TUser } from "../types/TUser";
-import { TFavourites, TLikedCat, IFavourite, TUnlikedCat } from "../types/TFavourite";
+import { TFavourites, IFavourite, TUnlikedCat } from "../types/TFavourite";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -46,9 +46,8 @@ export const registerUserApi = async (
       password: password,
     }),
   });
-  console.log(response.statusText)
+  console.log(response.statusText);
   if (response.ok) {
-
     const userData = await response.json();
     localStorage.setItem("authToken", userData.token);
     return userData;
@@ -75,34 +74,33 @@ export const deleteLikeApi = async (
     headers: {
       Authorization: "Bearer " + localStorage.getItem("authToken"),
     },
-  })
-    .then((response) => {
-      if(!response.ok) {
-        return Promise.reject(response.statusText);
-      }
-      return { success: true, cat_id: id };
-    })
+  }).then((response) => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    return { success: true, cat_id: id };
+  });
 };
 
 export const addLikeApi = async (
   id: string
 ): Promise<TServerResponse<IFavourite>> => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem("authToken");
 
   try {
-   const response = await fetch(apiUrl.favourite_cats, {
-      method: 'POST',
+    const response = await fetch(apiUrl.favourite_cats, {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ cat_id: id })
+      body: JSON.stringify({ cat_id: id }),
     });
-    if(response.status === 201) {
+    if (response.status === 201) {
       return await response.json();
     }
-    throw new Error('Failed to add like')
-  } catch(error) {
+    throw new Error("Failed to add like");
+  } catch (error) {
     throw error;
   }
-}
+};

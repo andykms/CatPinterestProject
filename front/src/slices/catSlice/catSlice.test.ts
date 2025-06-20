@@ -3,7 +3,7 @@ import { catReducer } from "./catSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { getCatsApi } from "../../utils/CatApi";
 import { getCatsAction } from "../../actions/ApiActions";
-import { getCats, paginate } from "./catSlice";
+import { getCats } from "./catSlice";
 
 const mockCats: TCats = [
   {
@@ -234,7 +234,7 @@ describe('Тест стейта котов', ()=>{
     (getCatsApi as jest.Mock).mockImplementation(
       () => Promise.resolve(mockCats.slice(0, 10))
     );
-    const action = await store.dispatch(
+    await store.dispatch(
       getCatsAction()
     );
 
